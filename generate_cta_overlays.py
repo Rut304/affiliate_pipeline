@@ -1,21 +1,22 @@
 # generate_cta_overlays.py
 import argparse
-import os
 from pathlib import Path
-from typing import Optional
-from PIL import Image, ImageDraw, ImageFont
+
 import yaml
+from PIL import Image, ImageDraw, ImageFont
 
 DEFAULT_TEXT = "Shop Now"
 DEFAULT_TEXT_COLOR = "#FFFFFF"
 DEFAULT_BAR_COLOR = "#000000"
 DEFAULT_BAR_ALPHA = 170  # 0-255
-DEFAULT_MARGIN = 24      # px padding inside bar
+DEFAULT_MARGIN = 24  # px padding inside bar
 DEFAULT_BAR_HEIGHT_FRAC = 0.18  # 18% of height
+
 
 def load_yaml(path: Path) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
+
 
 def find_font(size: int) -> ImageFont.FreeTypeFont:
     # Try a few common macOS/system fonts; fall back to default bitmap
@@ -33,7 +34,16 @@ def find_font(size: int) -> ImageFont.FreeTypeFont:
                 continue
     return ImageFont.load_default()
 
-def draw_cta(img: Image.Image, text: str, text_color: str, bar_color: str, bar_alpha: int, margin: int, bar_height_frac: float) -> Image.Image:
+
+def draw_cta(
+    img: Image.Image,
+    text: str,
+    text_color: str,
+    bar_color: str,
+    bar_alpha: int,
+    margin: int,
+    bar_height_frac: float,
+) -> Image.Image:
     w, h = img.size
     overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
@@ -62,6 +72,7 @@ def draw_cta(img: Image.Image, text: str, text_color: str, bar_color: str, bar_a
     draw.text((tx, ty), text, fill=(tc[0], tc[1], tc[2], 255), font=font)
     return Image.alpha_composite(img.convert("RGBA"), overlay)
 
+
 def ImageColor_getrgb_safe(color_hex: str):
     # Simple hex -> RGB parser supporting #RRGGBB
     color_hex = color_hex.strip()
@@ -69,9 +80,19 @@ def ImageColor_getrgb_safe(color_hex: str):
         color_hex = color_hex[1:]
     if len(color_hex) != 6:
         return (255, 255, 255)
-    return tuple(int(color_hex[i:i+2], 16) for i in (0, 2, 4))
+    return tuple(int(color_hex[i : i + 2], 16) for i in (0, 2, 4))
 
-def process_pack(pack_id: str, text: str, text_color: str, bar_color: str, bar_alpha: int, margin: int, bar_height_frac: float, overwrite: bool):
+
+def process_pack(
+    pack_id: str,
+    text: str,
+    text_color: str,
+    bar_color: str,
+    bar_alpha: int,
+    margin: int,
+    bar_height_frac: float,
+    overwrite: bool,
+):
     pack_dir = Path("content") / pack_id
     yaml_path = pack_dir / "input.yaml"
     data = load_yaml(yaml_path)
@@ -98,7 +119,9 @@ def process_pack(pack_id: str, text: str, text_color: str, bar_color: str, bar_a
             continue
 
         with Image.open(src_path) as im:
-            out = draw_cta(im, text, text_color, bar_color, bar_alpha, margin, bar_height_frac)
+            out = draw_cta(
+                im, text, text_color, bar_color, bar_alpha, margin, bar_height_frac
+            )
             # Save as JPEG/PNG based on original extension
             params = {}
             if dst_path.suffix.lower() in [".jpg", ".jpeg"]:
@@ -108,21 +131,59 @@ def process_pack(pack_id: str, text: str, text_color: str, bar_color: str, bar_a
         created += 1
         print(f"🏷️  CTA: {dst_path}")
 
-    print(f"✅ Overlays done — created: {created}, skipped: {skipped}, total: {len(products)}")
+    print(
+        f"✅ Overlays done — created: {created}, skipped: {skipped}, total: {len(products)}"
+    )
+
 
 def main():
     ap = argparse.ArgumentParser(description="Generate CTA overlays for pack images.")
     ap.add_argument("pack_id", help="Pack under content/, e.g., 003_affiliate_airfryer")
-    ap.add_argument("--text", default=DEFAULT_TEXT, help='CTA text (default "Shop Now")')
-    ap.add_argument("--text-color", default=DEFAULT_TEXT_COLOR, help="CTA text color hex (default #FFFFFF)")
-    ap.add_argument("--bar-color", default=DEFAULT_BAR_COLOR, help="Bar color hex (default #000000)")
-    ap.add_argument("--bar-alpha", type=int, default=DEFAULT_BAR_ALPHA, help="Bar opacity 0-255 (default 170)")
-    ap.add_argument("--margin", type=int, default=DEFAULT_MARGIN, help="Inner padding in px (default 24)")
-    ap.add_argument("--bar-height-frac", type=float, default=DEFAULT_BAR_HEIGHT_FRAC, help="Bar height fraction of image (default 0.18)")
-    ap.add_argument("--overwrite", action="store_true", help="Overwrite existing outputs")
+    ap.add_argument(
+        "--text", default=DEFAULT_TEXT, help='CTA text (default "Shop Now")'
+    )
+    ap.add_argument(
+        "--text-color",
+        default=DEFAULT_TEXT_COLOR,
+        help="CTA text color hex (default #FFFFFF)",
+    )
+    ap.add_argument(
+        "--bar-color", default=DEFAULT_BAR_COLOR, help="Bar color hex (default #000000)"
+    )
+    ap.add_argument(
+        "--bar-alpha",
+        type=int,
+        default=DEFAULT_BAR_ALPHA,
+        help="Bar opacity 0-255 (default 170)",
+    )
+    ap.add_argument(
+        "--margin",
+        type=int,
+        default=DEFAULT_MARGIN,
+        help="Inner padding in px (default 24)",
+    )
+    ap.add_argument(
+        "--bar-height-frac",
+        type=float,
+        default=DEFAULT_BAR_HEIGHT_FRAC,
+        help="Bar height fraction of image (default 0.18)",
+    )
+    ap.add_argument(
+        "--overwrite", action="store_true", help="Overwrite existing outputs"
+    )
     args = ap.parse_args()
 
-    process_pack(args.pack_id, args.text, args.text_color, args.bar_color, args.bar_alpha, args.margin, args.bar_height_frac, args.overwrite)
+    process_pack(
+        args.pack_id,
+        args.text,
+        args.text_color,
+        args.bar_color,
+        args.bar_alpha,
+        args.margin,
+        args.bar_height_frac,
+        args.overwrite,
+    )
+
 
 if __name__ == "__main__":
     main()

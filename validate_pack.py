@@ -1,16 +1,18 @@
 # validate_pack.py
 import argparse
 from pathlib import Path
+from typing import List, Tuple
+
 import yaml
-from typing import Dict, List, Tuple
-import sys
 
 # Reuse narration validator from project root
 import validate_narration as narr
 
+
 def load_yaml(path: Path) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
+
 
 def check_images(pack_dir: Path, products: list) -> Tuple[int, List[str]]:
     missing = []
@@ -21,6 +23,7 @@ def check_images(pack_dir: Path, products: list) -> Tuple[int, List[str]]:
             missing.append(name or "<missing name>")
     return (len(products) - len(missing), missing)
 
+
 def check_overlays(pack_dir: Path, products: list) -> Tuple[int, List[str]]:
     missing = []
     cta_dir = pack_dir / "images_cta"
@@ -30,12 +33,14 @@ def check_overlays(pack_dir: Path, products: list) -> Tuple[int, List[str]]:
             missing.append(name or "<missing name>")
     return (len(products) - len(missing), missing)
 
+
 def check_videos(pack_dir: Path) -> Tuple[int, List[str]]:
     vdir = pack_dir / "video"
     if not vdir.exists():
         return (0, ["<video dir missing>"])
     vids = sorted(vdir.glob("*.mp4"))
     return (len(vids), [v.name for v in vids])
+
 
 def check_product_cta(product_dir: Path) -> List[str]:
     issues = []
@@ -45,12 +50,16 @@ def check_product_cta(product_dir: Path) -> List[str]:
             issues.append(txt_file.name)
     return issues
 
-def print_section(title: str):
-    print("\n" + "="*len(title))
-    print(title)
-    print("="*len(title))
 
-def validate_pack(pack_id: str, require_cta: bool, require_video: bool, patch_narr: bool) -> int:
+def print_section(title: str):
+    print("\n" + "=" * len(title))
+    print(title)
+    print("=" * len(title))
+
+
+def validate_pack(
+    pack_id: str, require_cta: bool, require_video: bool, patch_narr: bool
+) -> int:
     pack_dir = Path("content") / pack_id
     yml = pack_dir / "input.yaml"
     if not yml.exists():
@@ -113,10 +122,14 @@ def validate_pack(pack_id: str, require_cta: bool, require_video: bool, patch_na
 
     # Exit logic
     hard_fail = 0
-    if ok_imgs < len(products): hard_fail = 1
-    if n_ok < len(products): hard_fail = 1
-    if require_cta and ok_cta < len(products): hard_fail = 1
-    if require_video and v_ok < len(products): hard_fail = 1
+    if ok_imgs < len(products):
+        hard_fail = 1
+    if n_ok < len(products):
+        hard_fail = 1
+    if require_cta and ok_cta < len(products):
+        hard_fail = 1
+    if require_video and v_ok < len(products):
+        hard_fail = 1
 
     if hard_fail:
         print("\n❌ Pack FAILED required checks.")
@@ -125,16 +138,25 @@ def validate_pack(pack_id: str, require_cta: bool, require_video: bool, patch_na
         print("\n✅ Pack PASSED required checks.")
         return 0
 
+
 def main():
     ap = argparse.ArgumentParser(description="Validate a content pack end-to-end.")
     ap.add_argument("pack_id", help="Pack under content/, e.g., 003_affiliate_airfryer")
-    ap.add_argument("--require-cta", action="store_true", help="Fail if CTA overlays missing")
-    ap.add_argument("--require-video", action="store_true", help="Fail if videos missing")
-    ap.add_argument("--patch-narr", action="store_true", help="Patch missing CTA in narration")
+    ap.add_argument(
+        "--require-cta", action="store_true", help="Fail if CTA overlays missing"
+    )
+    ap.add_argument(
+        "--require-video", action="store_true", help="Fail if videos missing"
+    )
+    ap.add_argument(
+        "--patch-narr", action="store_true", help="Patch missing CTA in narration"
+    )
     args = ap.parse_args()
-    code = validate_pack(args.pack_id, args.require_cta, args.require_video, args.patch_narr)
+    code = validate_pack(
+        args.pack_id, args.require_cta, args.require_video, args.patch_narr
+    )
     raise SystemExit(code)
+
 
 if __name__ == "__main__":
     main()
-

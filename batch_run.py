@@ -1,13 +1,14 @@
+import argparse
+import json
+import logging
 import os
 import sys
-import json
-import argparse
-import logging
 from datetime import datetime
 
 DEFAULT_CONTENT_DIR = "content"
 DEFAULT_EXPORT_DIR = "exports"
 VALID_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
+
 
 def setup_logging(verbose: bool):
     level = logging.DEBUG if verbose else logging.INFO
@@ -17,19 +18,27 @@ def setup_logging(verbose: bool):
         datefmt="%H:%M:%S",
     )
 
+
 def list_packs(content_dir: str):
     if not os.path.isdir(content_dir):
         logging.error(f"Content dir not found: {content_dir}")
         return []
     # Only include subdirectories
-    packs = [d for d in os.listdir(content_dir) if os.path.isdir(os.path.join(content_dir, d))]
+    packs = [
+        d
+        for d in os.listdir(content_dir)
+        if os.path.isdir(os.path.join(content_dir, d))
+    ]
+
     # Sort numerically when possible, otherwise lexicographically
     def sort_key(name: str):
         try:
             return (0, int(name.split("_", 1)[0]))
         except Exception:
             return (1, name)
+
     return sorted(packs, key=sort_key)
+
 
 def load_metadata(pack_path: str):
     meta_path = os.path.join(pack_path, "metadata.json")
@@ -42,6 +51,7 @@ def load_metadata(pack_path: str):
     except Exception as e:
         return None, f"Failed to parse metadata.json: {e}"
 
+
 def collect_images(images_dir: str):
     files = []
     if os.path.isdir(images_dir):
@@ -51,13 +61,21 @@ def collect_images(images_dir: str):
                 files.append(os.path.join(images_dir, f))
     return sorted(files)
 
+
 def validate_pack(content_dir: str, pack_name: str, metadata: dict):
     pack_path = os.path.join(content_dir, pack_name)
     warnings = []
     errors = []
 
     # Required metadata keys
-    required_keys = ["title", "cta", "theme", "image_count", "narration_file", "text_file"]
+    required_keys = [
+        "title",
+        "cta",
+        "theme",
+        "image_count",
+        "narration_file",
+        "text_file",
+    ]
     for k in required_keys:
         if k not in metadata:
             errors.append(f"metadata.json missing key: {k}")
@@ -78,7 +96,9 @@ def validate_pack(content_dir: str, pack_name: str, metadata: dict):
     images = collect_images(images_dir)
     expected_images = metadata.get("image_count", 0)
     if expected_images and len(images) < expected_images:
-        warnings.append(f"Images found ({len(images)}) < image_count ({expected_images}) in {images_dir}")
+        warnings.append(
+            f"Images found ({len(images)}) < image_count ({expected_images}) in {images_dir}"
+        )
 
     return {
         "pack_path": pack_path,
@@ -89,6 +109,7 @@ def validate_pack(content_dir: str, pack_name: str, metadata: dict):
         "warnings": warnings,
         "errors": errors,
     }
+
 
 def simulate_export(export_dir: str, pack_name: str, metadata: dict):
     pack_export_dir = os.path.join(export_dir, pack_name)
@@ -105,6 +126,7 @@ def simulate_export(export_dir: str, pack_name: str, metadata: dict):
         )
     return outfile
 
+
 def should_process(pack_name: str, only_set, skip_set):
     if only_set and pack_name not in only_set:
         return False
@@ -112,20 +134,34 @@ def should_process(pack_name: str, only_set, skip_set):
         return False
     return True
 
+
 def parse_csv_set(value: str):
     if not value:
         return set()
     return set([v.strip() for v in value.split(",") if v.strip()])
 
+
 def main():
     parser = argparse.ArgumentParser(description="Affiliate content batch runner")
-    parser.add_argument("--content-dir", default=DEFAULT_CONTENT_DIR, help="Content directory")
-    parser.add_argument("--export-dir", default=DEFAULT_EXPORT_DIR, help="Export directory")
-    parser.add_argument("--only", default="", help="Comma-separated pack names to include (e.g., 002_affiliate_blender)")
+    parser.add_argument(
+        "--content-dir", default=DEFAULT_CONTENT_DIR, help="Content directory"
+    )
+    parser.add_argument(
+        "--export-dir", default=DEFAULT_EXPORT_DIR, help="Export directory"
+    )
+    parser.add_argument(
+        "--only",
+        default="",
+        help="Comma-separated pack names to include (e.g., 002_affiliate_blender)",
+    )
     parser.add_argument("--skip", default="", help="Comma-separated pack names to skip")
-    parser.add_argument("--dry-run", action="store_true", help="Validate only; do not write exports")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Validate only; do not write exports"
+    )
     parser.add_argument("--verbose", action="store_true", help="Verbose logging")
-    parser.add_argument("--fail-on-warn", action="store_true", help="Treat warnings as failures")
+    parser.add_argument(
+        "--fail-on-warn", action="store_true", help="Treat warnings as failures"
+    )
     args = parser.parse_args()
 
     setup_logging(args.verbose)
@@ -169,7 +205,9 @@ def main():
             continue
 
         if args.dry_run:
-            logging.info(f"{pack_name}: DRY RUN OK — would export to {os.path.join(export_dir, pack_name)}")
+            logging.info(
+                f"{pack_name}: DRY RUN OK — would export to {os.path.join(export_dir, pack_name)}"
+            )
             summary.append((pack_name, "DRY-RUN OK"))
             continue
 
@@ -182,6 +220,7 @@ def main():
     max_name = max((len(n) for (n, _) in summary), default=10)
     for name, status in summary:
         print(f"{name.ljust(max_name)}  |  {status}")
+
 
 if __name__ == "__main__":
     main()

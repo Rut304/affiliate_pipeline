@@ -1,10 +1,13 @@
 # repair_cta_format.py
 from pathlib import Path
+
 import yaml
+
 
 def load_yaml(yml_path):
     with open(yml_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f) or {}
+
 
 def repair_files(pack_id):
     pack_dir = Path("content") / pack_id
@@ -30,8 +33,10 @@ def repair_files(pack_id):
 
     print(f"🔧 Repaired {repaired} file(s)")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         print("Usage: python repair_cta_format.py <pack_id>")
         sys.exit(1)

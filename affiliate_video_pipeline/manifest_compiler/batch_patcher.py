@@ -1,7 +1,8 @@
-import os
 import json
+import os
 
 MANIFEST_DIR = "affiliate_video_pipeline/manifests"
+
 
 def patch_all_manifests():
     patched = []

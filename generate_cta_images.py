@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
-import argparse, os, shutil
+import argparse
+import shutil
 from pathlib import Path
+
 
 def generate_cta_images(pack_id: str):
     base = Path("content") / pack_id
@@ -28,11 +30,13 @@ def generate_cta_images(pack_id: str):
 
     print(f"✅ Created {count} CTA overlay(s) for {pack_id}")
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("pack_id", help="Pack folder name under content/")
     args = parser.parse_args()
     generate_cta_images(args.pack_id)
+
 
 if __name__ == "__main__":
     main()

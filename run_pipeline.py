@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 import os
 import re
-import sys
-import argparse
 import subprocess
+import sys
 from pathlib import Path
 from typing import List, Tuple
 
@@ -12,7 +11,11 @@ from typing import List, Tuple
 # -----------------------------
 PACKS_DIR = os.getenv("PACKS_DIR", "packs")
 CONTENT_DIR = os.getenv("CONTENT_DIR", "content")
-AUTO_REPAIR_CTA_DEFAULT = os.getenv("AUTO_REPAIR_CTA", "1") not in ("0", "false", "False")
+AUTO_REPAIR_CTA_DEFAULT = os.getenv("AUTO_REPAIR_CTA", "1") not in (
+    "0",
+    "false",
+    "False",
+)
 GLOBAL_FALLBACK_CTA = os.getenv("FALLBACK_CTA", "CTA_PRIMARY: Check out this product")
 
 # -----------------------------
@@ -20,11 +23,14 @@ GLOBAL_FALLBACK_CTA = os.getenv("FALLBACK_CTA", "CTA_PRIMARY: Check out this pro
 # -----------------------------
 _CTA_PATTERN = re.compile(r"(?mi)^\s*CTA_PRIMARY\s*:\s*\S.+$")
 
+
 def _has_valid_cta(text: str) -> bool:
     return _CTA_PATTERN.search(text) is not None
 
+
 def _ensure_trailing_newline(s: str) -> str:
     return s if s.endswith("\n") else s + "\n"
+
 
 def repair_narration_cta(
     narr_dir: Path,
@@ -47,7 +53,9 @@ def repair_narration_cta(
         checked += 1
         if _has_valid_cta(text):
             continue
-        updated = _ensure_trailing_newline(text) + _ensure_trailing_newline(fallback_cta)
+        updated = _ensure_trailing_newline(text) + _ensure_trailing_newline(
+            fallback_cta
+        )
         if not dry_run:
             if make_backup:
                 bak = fpath.with_suffix(fpath.suffix + ".bak")
@@ -58,6 +66,7 @@ def repair_narration_cta(
         repaired_files.append(fpath.name)
     return repaired, checked, repaired_files
 
+
 # -----------------------------
 # Pack discovery
 # -----------------------------
@@ -67,12 +76,14 @@ def get_all_pack_ids() -> List[str]:
         return []
     return [p.name for p in pack_dir.iterdir() if p.is_dir()]
 
+
 # -----------------------------
 # Subprocess runner
 # -----------------------------
 def run_step(script: str, pack_id: str) -> int:
     cmd = [sys.executable, script, pack_id]
     return subprocess.run(cmd).returncode
+
 
 # -----------------------------
 # Fallback CTA selection
@@ -86,6 +97,7 @@ def choose_fallback_cta(pack_id: str) -> str:
     if "coffee" in pid or "espresso" in pid:
         return "CTA_PRIMARY: Brew better—see this coffee gear"
     return GLOBAL_FALLBACK_CTA
+
 
 # -----------------------------
 # Per-pack pipeline
@@ -109,9 +121,13 @@ def run_pipeline_for(pack_id: str, auto_repair_cta: bool = True) -> None:
         if checked == 0:
             print(f"❌ No narration .txt files found in {narr_dir}")
         elif repaired > 0:
-            print(f"🛠 Repaired {repaired}/{checked} narration file(s) missing CTA_PRIMARY in {pack_id}")
+            print(
+                f"🛠 Repaired {repaired}/{checked} narration file(s) missing CTA_PRIMARY in {pack_id}"
+            )
         else:
-            print(f"✅ Narration CTA_PRIMARY already valid in {pack_id} ({checked} file(s) checked)")
+            print(
+                f"✅ Narration CTA_PRIMARY already valid in {pack_id} ({checked} file(s) checked)"
+            )
 
     run_step("validate_narration.py", pack_id)
 
@@ -121,15 +137,26 @@ def run_pipeline_for(pack_id: str, auto_repair_cta: bool = True) -> None:
     run_step("generate_cta_images.py", pack_id)
     run_step("assemble_videos.py", pack_id)
 
+
 # -----------------------------
 # CLI
 # -----------------------------
 def parse_args():
     import argparse
-    parser = argparse.ArgumentParser(description="Run affiliate pipeline for one or all packs.")
-    parser.add_argument("pack_id", nargs="?", help="Optional pack ID. If omitted, run for all packs.")
-    parser.add_argument("--no-auto-repair-cta", action="store_true", help="Disable auto-repair of CTA_PRIMARY in narration .txt files")
+
+    parser = argparse.ArgumentParser(
+        description="Run affiliate pipeline for one or all packs."
+    )
+    parser.add_argument(
+        "pack_id", nargs="?", help="Optional pack ID. If omitted, run for all packs."
+    )
+    parser.add_argument(
+        "--no-auto-repair-cta",
+        action="store_true",
+        help="Disable auto-repair of CTA_PRIMARY in narration .txt files",
+    )
     return parser.parse_args()
+
 
 def main(pack_id=None):
     args = parse_args()
@@ -139,6 +166,7 @@ def main(pack_id=None):
     else:
         for pack in get_all_pack_ids():
             run_pipeline_for(pack, auto_repair_cta=auto_repair_cta)
+
 
 if __name__ == "__main__":
     main()

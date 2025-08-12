@@ -1,12 +1,19 @@
 #!/usr/bin/env python3
-import os, sys, json, csv, time, random, subprocess
-from pathlib import Path
+import csv
+import json
+import os
+import random
+import subprocess
+import sys
+import time
 from datetime import datetime, timedelta
+from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE_DIR = ROOT / ".state"
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 STATE_PATH = STATE_DIR / "daily_state.json"
+
 
 def load_json(path, default):
     try:
@@ -14,9 +21,11 @@ def load_json(path, default):
     except Exception:
         return default
 
+
 def save_json(path, obj):
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     Path(path).write_text(json.dumps(obj, indent=2), encoding="utf-8")
+
 
 def load_config(cfg_path: Path):
     cfg = load_json(cfg_path, {})
@@ -37,14 +46,19 @@ def load_config(cfg_path: Path):
     cfg.setdefault("tts_voice", "Samantha")
     return cfg
 
+
 def parse_hhmm(today: datetime, hhmm: str) -> datetime:
     hh, mm = hhmm.split(":")
     return today.replace(hour=int(hh), minute=int(mm), second=0, microsecond=0)
 
+
 def clamp(dt, start, end):
     return max(start, min(dt, end))
 
-def build_daily_schedule(today: datetime, start_hhmm: str, end_hhmm: str, n: int, jitter_s: int):
+
+def build_daily_schedule(
+    today: datetime, start_hhmm: str, end_hhmm: str, n: int, jitter_s: int
+):
     start = parse_hhmm(today, start_hhmm)
     end = parse_hhmm(today, end_hhmm)
     if end <= start:
@@ -64,6 +78,7 @@ def build_daily_schedule(today: datetime, start_hhmm: str, end_hhmm: str, n: int
     slots.sort()
     return slots
 
+
 def load_manifest(manifest_path: Path):
     if not manifest_path.exists():
         return []
@@ -73,6 +88,7 @@ def load_manifest(manifest_path: Path):
             if row.get("enabled", "1") in ("1", "true", "True", "yes", "YES"):
                 packs.append(row["pack_id"])
     return packs
+
 
 def next_pack(packs, state, allow_repeat):
     used = set(state.get("used_today", []))
@@ -89,16 +105,19 @@ def next_pack(packs, state, allow_repeat):
             return p
     return None
 
+
 def ensure_logs(cfg):
     log_dir = ROOT / cfg["log_dir"]
     log_dir.mkdir(parents=True, exist_ok=True)
     today = datetime.now().strftime("%Y-%m-%d")
     return log_dir / f"{cfg['log_prefix']}_{today}.log"
 
+
 def log_line(path: Path, text: str):
     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with path.open("a", encoding="utf-8") as f:
         f.write(f"[{ts}] {text}\n")
+
 
 def run_once(cfg, pack_id, log_path):
     py = cfg["python_path"] or sys.executable
@@ -117,6 +136,7 @@ def run_once(cfg, pack_id, log_path):
     log_line(log_path, f"END   pack={pack_id} status={status} duration_s={int(dur)}")
     return rc
 
+
 def sleep_until(target_dt, min_gap_s):
     now = datetime.now()
     if target_dt <= now:
@@ -127,6 +147,7 @@ def sleep_until(target_dt, min_gap_s):
         time.sleep(s)
         gap -= s
 
+
 def rollover_if_needed(state, today):
     today_key = today.strftime("%Y-%m-%d")
     if state.get("today_key") != today_key:
@@ -136,6 +157,7 @@ def rollover_if_needed(state, today):
         state["round_robin_idx"] = 0
         state["schedule"] = []
         save_json(STATE_PATH, state)
+
 
 def main():
     cfg_path = ROOT / "config" / "scheduler.config.json"
@@ -158,7 +180,10 @@ def main():
             state["schedule"] = [dt.isoformat() for dt in slots]
             state["next_slot_idx"] = 0
             save_json(STATE_PATH, state)
-            log_line(log_path, f"SCHEDULE {len(slots)} slots from {cfg['window']['start']} to {cfg['window']['end']}")
+            log_line(
+                log_path,
+                f"SCHEDULE {len(slots)} slots from {cfg['window']['start']} to {cfg['window']['end']}",
+            )
         slots = [datetime.fromisoformat(s) for s in state["schedule"]]
         i = state.get("next_slot_idx", 0)
         if i >= len(slots):
@@ -188,6 +213,7 @@ def main():
         state["next_slot_idx"] = i + 1
         save_json(STATE_PATH, state)
         time.sleep(cfg["min_gap_seconds"])
+
 
 if __name__ == "__main__":
     main()

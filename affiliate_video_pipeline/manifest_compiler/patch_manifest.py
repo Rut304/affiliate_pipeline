@@ -1,10 +1,15 @@
-import os, json, hashlib
+import hashlib
+import json
+import os
 from datetime import datetime
 
+
 def hash_file(path):
-    if not os.path.exists(path): return None
-    with open(path, 'rb') as f:
+    if not os.path.exists(path):
+        return None
+    with open(path, "rb") as f:
         return hashlib.md5(f.read()).hexdigest()
+
 
 def patch_manifest(path):
     if not os.path.exists(path):
@@ -30,7 +35,7 @@ def patch_manifest(path):
     if updated:
         manifest["hashes"].update(new_hashes)
         manifest["last_modified"] = datetime.utcnow().isoformat()
-        with open(path, 'w') as f:
+        with open(path, "w") as f:
             json.dump(manifest, f, indent=2)
         print(f"🔧 Manifest patched: {path}")
         for k, v in new_hashes.items():

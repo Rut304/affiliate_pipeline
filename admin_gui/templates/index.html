@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Affiliate Config Panel</title>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    input, select { width: 300px; padding: 6px; margin-top: 4px; }
+    .submit-btn { margin-top: 24px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h1>🔧 Affiliate Pipeline Configuration</h1>
+  <form method="POST">
+    <label for="min_duration_seconds">Min Duration (seconds):</label>
+    <input type="number" name="min_duration_seconds" value="{{ config.min_duration_seconds }}">
+
+    <label for="default_source">Default Source:</label>
+    <input type="text" name="default_source" value="{{ config.default_source }}">
+
+    <label for="default_platform">Default Platform:</label>
+    <select name="default_platform">
+      <option value="youtube" {% if config.default_platform == "youtube" %}selected{% endif %}>YouTube</option>
+      <option value="tiktok" {% if config.default_platform == "tiktok" %}selected{% endif %}>TikTok</option>
+      <option value="instagram" {% if config.default_platform == "instagram" %}selected{% endif %}>Instagram</option>
+    </select>
+
+    <label for="default_account">Default Account:</label>
+    <select name="default_account">
+      <option value="rut_channel" {% if config.default_account == "rut_channel" %}selected{% endif %}>Rut Channel</option>
+      <option value="tech_channel" {% if config.default_account == "tech_channel" %}selected{% endif %}>Tech Channel</option>
+      <option value="alt_channel" {% if config.default_account == "alt_channel" %}selected{% endif %}>Alt Channel</option>
+    </select>
+
+    <label for="product_filter_keywords">Filter Keywords (comma-separated):</label>
+    <input type="text" name="product_filter_keywords" value="{{ config.product_filter_keywords | join(',') }}">
+
+    <label for="product_filter_min_price">Min Price ($):</label>
+    <input type="number" name="product_filter_min_price" value="{{ config.product_filter_min_price }}">
+
+    <label for="product_filter_max_price">Max Price ($):</label>
+    <input type="number" name="product_filter_max_price" value="{{ config.product_filter_max_price }}">
+
+    <button type="submit" class="submit-btn">💾 Save Config</button>
+  </form>
+
+  <form action="/run_batch" method="POST">
+    <button type="submit" class="submit-btn">⚙️ Run Batch Validators</button>
+  </form>
+</body>
+</html>

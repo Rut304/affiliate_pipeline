@@ -1,7 +1,10 @@
 # validate_narration_schema.py
 import os
 
-def validate_narration_schema(folder="narration", min_length=50, required_phrases=None, auto_fix=True):
+
+def validate_narration_schema(
+    folder="narration", min_length=50, required_phrases=None, auto_fix=True
+):
     if required_phrases is None:
         required_phrases = ["Introducing", "Experience"]
 
@@ -35,11 +38,12 @@ def validate_narration_schema(folder="narration", min_length=50, required_phrase
 
     if not issues:
         return "✅ All narration files passed schema validation."
-    
+
     msg = "\n".join(issues)
     if auto_fix:
         msg += f"\n🛠️ Auto-fixed {fixed} file(s) with generic narration."
     return msg
+
 
 if __name__ == "__main__":
     print(validate_narration_schema())

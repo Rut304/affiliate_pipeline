@@ -1,9 +1,14 @@
-import os, json, hashlib
+import hashlib
+import json
+import os
+
 
 def hash_file(path):
-    if not os.path.exists(path): return None
-    with open(path, 'rb') as f:
+    if not os.path.exists(path):
+        return None
+    with open(path, "rb") as f:
         return hashlib.md5(f.read()).hexdigest()
+
 
 def validate_manifest(path):
     if not os.path.exists(path):
@@ -24,7 +29,9 @@ def validate_manifest(path):
     for asset_name, expected_hash in manifest["hashes"].items():
         actual_hash = hash_file(manifest["assets"].get(asset_name))
         if actual_hash != expected_hash:
-            errors.append(f"Hash mismatch: {asset_name} → expected {expected_hash}, got {actual_hash}")
+            errors.append(
+                f"Hash mismatch: {asset_name} → expected {expected_hash}, got {actual_hash}"
+            )
 
     # Check CTA timing logic
     if any(t > manifest["duration"] for t in manifest["cta_timing"]):

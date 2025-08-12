@@ -1,9 +1,16 @@
 import time
-from affiliate_video_pipeline.manifest_compiler.batch_patcher import patch_all_manifests
-from affiliate_video_pipeline.manifest_compiler.batch_validator import validate_all_manifests
-from affiliate_video_pipeline.manifest_compiler.git_snapshot import snapshot_manifests
-from affiliate_video_pipeline.registry.registry_indexer import generate_registry_index
-from affiliate_video_pipeline.manifest_compiler.audit_logger import log_pipeline_run
+
+from affiliate_video_pipeline.manifest_compiler.audit_logger import \
+    log_pipeline_run
+from affiliate_video_pipeline.manifest_compiler.batch_patcher import \
+    patch_all_manifests
+from affiliate_video_pipeline.manifest_compiler.batch_validator import \
+    validate_all_manifests
+from affiliate_video_pipeline.manifest_compiler.git_snapshot import \
+    snapshot_manifests
+from affiliate_video_pipeline.registry.registry_indexer import \
+    generate_registry_index
+
 
 def full_pipeline(commit_msg="Update manifests"):
     start_time = time.time()

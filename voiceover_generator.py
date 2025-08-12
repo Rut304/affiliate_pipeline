@@ -1,7 +1,9 @@
 # voiceover_generator.py
-import argparse, json
-from pathlib import Path
+import argparse
 import hashlib
+import json
+from pathlib import Path
+
 
 def synthesize(text: str, output_path: Path) -> dict:
     # Simulated voiceover generator — replace with real API or TTS library
@@ -13,8 +15,9 @@ def synthesize(text: str, output_path: Path) -> dict:
         "id": output_path.stem,
         "text": text,
         "duration_sec": duration_sec,
-        "hash": hashlib.md5(text.encode()).hexdigest()
+        "hash": hashlib.md5(text.encode()).hexdigest(),
     }
+
 
 def generate_voiceovers(narration_dir: str, out_dir: str) -> list[Path]:
     n_dir = Path(narration_dir)
@@ -36,12 +39,16 @@ def generate_voiceovers(narration_dir: str, out_dir: str) -> list[Path]:
         written.append(wav_path)
     return written
 
+
 def main():
-    ap = argparse.ArgumentParser(description="Generate voiceovers from narration files.")
+    ap = argparse.ArgumentParser(
+        description="Generate voiceovers from narration files."
+    )
     ap.add_argument("--narration-dir", default="narration")
     ap.add_argument("--out", default="audio")
     args = ap.parse_args()
     generate_voiceovers(narration_dir=args.narration_dir, out_dir=args.out)
+
 
 if __name__ == "__main__":
     main()

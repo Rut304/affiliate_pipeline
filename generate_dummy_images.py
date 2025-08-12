@@ -1,6 +1,8 @@
 import os
-from PIL import Image, ImageDraw, ImageFont
+
 import yaml
+from PIL import Image, ImageDraw
+
 
 def generate_images(pack_id):
     input_path = f"content/{pack_id}/input.yaml"
@@ -22,6 +24,7 @@ def generate_images(pack_id):
         img.save(img_path)
 
         print(f"🖼️ Generated: {img_path}")
+
 
 # 👇 Run for your current pack
 generate_images("003_affiliate_airfryer")

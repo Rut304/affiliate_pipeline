@@ -1,0 +1,12 @@
+{
+  "min_duration_seconds": 3.0,
+  "default_source": "Amazon",
+  "default_platform": "YouTube",
+  "default_account": "@jeff_main",
+  "available_sources": ["Amazon", "eBay", "AliExpress"],
+  "available_platforms": ["YouTube", "TikTok", "X"],
+  "available_accounts": ["@jeff_main", "@jeff_alt", "@brand_bot"],
+  "product_filter_keywords": ["wireless", "bluetooth"],
+  "product_filter_min_price": 20,
+  "product_filter_max_price": 100
+}

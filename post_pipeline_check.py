@@ -1,6 +1,7 @@
 # post_pipeline_check.py
 from pathlib import Path
 
+
 def check_output(pack_id: str) -> None:
     base_dir = Path("content") / pack_id
     narration_dir = base_dir / "narration"
@@ -27,8 +28,10 @@ def check_output(pack_id: str) -> None:
     else:
         print(f"🔴 Found {issues} issue(s) in final output. Review recommended.")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         print("Usage: python post_pipeline_check.py <pack_id>")
         sys.exit(1)

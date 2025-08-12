@@ -1,6 +1,6 @@
 # final_asset_check.py
 from pathlib import Path
-import re
+
 
 def validate_assets(pack_id: str) -> None:
     narration_dir = Path("content") / pack_id / "narration"
@@ -27,8 +27,10 @@ def validate_assets(pack_id: str) -> None:
     else:
         print(f"🔴 {errors} issue(s) found. Please fix before running pipeline.")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         print("Usage: python final_asset_check.py <pack_id>")
         sys.exit(1)

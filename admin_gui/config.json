@@ -1,0 +1,12 @@
+{
+  "min_duration_seconds": 30.0,
+  "default_source": "amazon",
+  "default_platform": "youtube",
+  "default_account": "rut_channel",
+  "product_filter_keywords": [
+    "electronics",
+    "gadgets"
+  ],
+  "product_filter_min_price": 50,
+  "product_filter_max_price": 300
+}

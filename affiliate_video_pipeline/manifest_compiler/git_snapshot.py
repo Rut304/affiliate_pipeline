@@ -1,10 +1,12 @@
 import subprocess
 
+
 def snapshot_manifests(commit_msg="Update manifests"):
     try:
         result = subprocess.run(
             ["git", "status", "--porcelain", "affiliate_video_pipeline/manifests"],
-            capture_output=True, text=True
+            capture_output=True,
+            text=True,
         )
 
         if not result.stdout.strip():
@@ -14,8 +16,7 @@ def snapshot_manifests(commit_msg="Update manifests"):
         subprocess.run(["git", "commit", "-m", commit_msg], check=True)
 
         sha_result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
-            capture_output=True, text=True
+            ["git", "rev-parse", "HEAD"], capture_output=True, text=True
         )
         git_sha = sha_result.stdout.strip()
         return "📦 Manifests committed to Git.", git_sha

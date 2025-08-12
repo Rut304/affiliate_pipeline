@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse
 import os
-import yaml
-import shutil
 from pathlib import Path
+
+import yaml
+
 
 def load_yaml(path):
     if not os.path.isfile(path):
@@ -12,11 +13,13 @@ def load_yaml(path):
     with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
+
 def synthesize_narration(text: str, output_path: Path):
     # Placeholder synthesis logic—replace with actual TTS call or mock
     with open(output_path, "wb") as f:
         f.write(b"FAKE AUDIO DATA")  # Replace this with real audio generation
     print(f"🎙️ Synthesized: {output_path.name}")
+
 
 def generate_pack_narration(pack_id: str, audio=True, overwrite=False, wpm=120):
     base_dir = Path("content") / pack_id
@@ -54,15 +57,21 @@ def generate_pack_narration(pack_id: str, audio=True, overwrite=False, wpm=120):
         if audio and (overwrite or not wav_file.exists()):
             synthesize_narration(narration_text, wav_file)
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("pack_id", help="Pack ID (folder under content/)")
     parser.add_argument("--audio", action="store_true", help="Generate audio files")
-    parser.add_argument("--overwrite", action="store_true", help="Overwrite existing files")
+    parser.add_argument(
+        "--overwrite", action="store_true", help="Overwrite existing files"
+    )
     parser.add_argument("--wpm", type=int, default=120, help="Words per minute")
     args = parser.parse_args()
 
-    generate_pack_narration(args.pack_id, audio=args.audio, overwrite=args.overwrite, wpm=args.wpm)
+    generate_pack_narration(
+        args.pack_id, audio=args.audio, overwrite=args.overwrite, wpm=args.wpm
+    )
+
 
 if __name__ == "__main__":
     main()

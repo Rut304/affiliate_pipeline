@@ -1,6 +1,7 @@
 import os
-from dotenv import load_dotenv
+
 import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 key = os.getenv("SEGMIND_API_KEY")

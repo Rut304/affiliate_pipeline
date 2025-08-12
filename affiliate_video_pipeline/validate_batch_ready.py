@@ -1,6 +1,7 @@
-import os
 import json
+import os
 from pathlib import Path
+
 
 def validate_manifest(pack_id: str) -> str:
     manifest_path = f"affiliate_video_pipeline/manifests/{pack_id}_manifest.json"
@@ -12,6 +13,7 @@ def validate_manifest(pack_id: str) -> str:
         return "✅ Valid"
     except Exception as e:
         return f"❌ Invalid: {e}"
+
 
 def validate_images(pack_id: str) -> str:
     manifest_path = f"affiliate_video_pipeline/manifests/{pack_id}_manifest.json"
@@ -31,6 +33,7 @@ def validate_images(pack_id: str) -> str:
     except Exception as e:
         return f"❌ Error validating images: {e}"
 
+
 def validate_narration(pack_id: str) -> str:
     narration_path = f"narration/{pack_id}.json"
     if not os.path.exists(narration_path):
@@ -44,10 +47,12 @@ def validate_narration(pack_id: str) -> str:
     except Exception as e:
         return f"❌ Error validating narration: {e}"
 
+
 def validate_output_dir(pack_id: str) -> str:
     output_dir = f"packs/{pack_id}"
     Path(output_dir).mkdir(parents=True, exist_ok=True)
     return "✅ Ready"
+
 
 def validate_pack(pack_id: str) -> dict:
     results = {

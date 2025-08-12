@@ -3,13 +3,16 @@ import os
 import re
 from typing import List, Tuple
 
-CTA_PATTERN = re.compile(r'(?mi)^\s*CTA_PRIMARY\s*:\s*\S.+$')
+CTA_PATTERN = re.compile(r"(?mi)^\s*CTA_PRIMARY\s*:\s*\S.+$")
+
 
 def _has_valid_cta(text: str) -> bool:
     return CTA_PATTERN.search(text) is not None
 
+
 def _ensure_trailing_newline(s: str) -> str:
-    return s if s.endswith('\n') else s + '\n'
+    return s if s.endswith("\n") else s + "\n"
+
 
 def repair_narration_cta(
     narr_dir: str,
@@ -47,7 +50,9 @@ def repair_narration_cta(
             continue
 
         # Prepare updated content
-        updated = _ensure_trailing_newline(text) + _ensure_trailing_newline(fallback_cta)
+        updated = _ensure_trailing_newline(text) + _ensure_trailing_newline(
+            fallback_cta
+        )
 
         if not dry_run:
             if make_backup and not os.path.exists(fpath + ".bak"):

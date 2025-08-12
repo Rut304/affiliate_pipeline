@@ -2,12 +2,18 @@
 import argparse
 import sys
 from pathlib import Path
+
 from validate_narration import validate_narration  # importable function
+
 
 def main():
     ap = argparse.ArgumentParser(description="Preflight gate for narration assets.")
-    ap.add_argument("--narration-dir", default="narration", help="Directory of narration .txt files")
-    ap.add_argument("--autopatch", action="store_true", help="Auto-insert [CTA_PRIMARY] if missing")
+    ap.add_argument(
+        "--narration-dir", default="narration", help="Directory of narration .txt files"
+    )
+    ap.add_argument(
+        "--autopatch", action="store_true", help="Auto-insert [CTA_PRIMARY] if missing"
+    )
     args = ap.parse_args()
 
     n_dir = Path(args.narration_dir)
@@ -26,6 +32,7 @@ def main():
 
     print("[preflight] Narration validation passed ✅")
     sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,8 @@
 # script_auto.py
-import argparse, json, random, re
+import argparse
+import json
+import random
+import re
 from pathlib import Path
 from typing import Dict, List
 
@@ -31,28 +34,33 @@ HOOKS = {
     "persuasive": [
         "Level up your daily routine in under a minute.",
         "Small upgrade, outsized results.",
-        "Stop settling — make the jump."
+        "Stop settling — make the jump.",
     ],
     "casual": [
         "Quick share — this one’s worth a look.",
         "If you like things that just work, you’ll like this.",
-        "Here’s a neat upgrade with zero fuss."
+        "Here’s a neat upgrade with zero fuss.",
     ],
     "urgent": [
         "Don’t wait on this — you’ll use it every day.",
         "Limited stock. Big utility. Easy win.",
-        "If you’ve been on the fence, this is your nudge."
+        "If you’ve been on the fence, this is your nudge.",
     ],
 }
+
 
 def slugify(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
+
 def list_to_phrase(items: List[str]) -> str:
     items = [i.strip() for i in items if i and i.strip()]
-    if not items: return ""
-    if len(items) == 1: return items[0]
+    if not items:
+        return ""
+    if len(items) == 1:
+        return items[0]
     return ", ".join(items[:-1]) + " and " + items[-1]
+
 
 def render_narration(meta: Dict, tone: str, rng: random.Random) -> str:
     title = meta.get("title", "").strip()
@@ -60,10 +68,23 @@ def render_narration(meta: Dict, tone: str, rng: random.Random) -> str:
     benefits = list_to_phrase(meta.get("benefits", []))
     tmpl = TEMPLATES.get(tone, TEMPLATES["persuasive"])
     hook = rng.choice(HOOKS.get(tone, HOOKS["persuasive"]))
-    narration = tmpl.format(title=title, features=features, benefits=benefits, hook=hook).strip() + "\n"
+    narration = (
+        tmpl.format(
+            title=title, features=features, benefits=benefits, hook=hook
+        ).strip()
+        + "\n"
+    )
     return narration
 
-def generate_for_pack(pack_dir: Path, out_dir: Path, tone_override: str, rng: random.Random, force: bool, max_words: int) -> Path:
+
+def generate_for_pack(
+    pack_dir: Path,
+    out_dir: Path,
+    tone_override: str,
+    rng: random.Random,
+    force: bool,
+    max_words: int,
+) -> Path:
     pack_json = pack_dir / "product_pack.json"
     if not pack_json.exists():
         print(f"[skip] No product_pack.json in {pack_dir}")
@@ -94,14 +115,25 @@ def generate_for_pack(pack_dir: Path, out_dir: Path, tone_override: str, rng: ra
     print(f"[write] {out_file} ({len(narration.split())} words, tone={tone})")
     return out_file
 
+
 def main():
     p = argparse.ArgumentParser(description="Batch narration generator")
     p.add_argument("--source", default="packs", help="Root folder of product packs")
-    p.add_argument("--output", default="narration", help="Output folder for narration files")
-    p.add_argument("--tone", default=None, help="Override tone for all (persuasive|casual|urgent)")
-    p.add_argument("--force", action="store_true", help="Overwrite existing narration files")
-    p.add_argument("--seed", type=int, default=42, help="Random seed for deterministic hooks")
-    p.add_argument("--max-words", type=int, default=0, help="Soft cap on word count (0=off)")
+    p.add_argument(
+        "--output", default="narration", help="Output folder for narration files"
+    )
+    p.add_argument(
+        "--tone", default=None, help="Override tone for all (persuasive|casual|urgent)"
+    )
+    p.add_argument(
+        "--force", action="store_true", help="Overwrite existing narration files"
+    )
+    p.add_argument(
+        "--seed", type=int, default=42, help="Random seed for deterministic hooks"
+    )
+    p.add_argument(
+        "--max-words", type=int, default=0, help="Soft cap on word count (0=off)"
+    )
     args = p.parse_args()
 
     rng = random.Random(args.seed)
@@ -118,6 +150,7 @@ def main():
 
     for pack in packs:
         generate_for_pack(pack, out, args.tone, rng, args.force, args.max_words)
+
 
 if __name__ == "__main__":
     main()

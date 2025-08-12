@@ -1,7 +1,9 @@
 # validate_segmind.py
 import os
-from dotenv import load_dotenv
+
 import requests
+from dotenv import load_dotenv
+
 
 def validate_segmind():
     load_dotenv()
@@ -22,6 +24,7 @@ def validate_segmind():
         return "⚠️ Endpoint not found. Double-check URL."
     else:
         return f"❌ Unexpected error: {response.status_code}"
+
 
 if __name__ == "__main__":
     print(validate_segmind())

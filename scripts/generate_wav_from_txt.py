@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 import os
-import sys
-import subprocess
-from pathlib import Path
 import re
+import subprocess
+import sys
+from pathlib import Path
 
 CONTENT_DIR = os.getenv("CONTENT_DIR", "content")
 CTA_PATTERN = re.compile(r"(?mi)^\s*CTA_PRIMARY\s*:\s*\S.+$")
 
+
 def has_valid_cta(text: str) -> bool:
     return CTA_PATTERN.search(text) is not None
+
 
 def synth_one_txt(txt_path: Path, voice: str) -> bool:
     wav_path = txt_path.with_suffix(".wav")
@@ -23,14 +25,29 @@ def synth_one_txt(txt_path: Path, voice: str) -> bool:
     tmp_txt = txt_path.with_suffix(".tmp.txt")
     tmp_txt.write_text(text, encoding="utf-8")
     try:
-        subprocess.check_call(["say", "-v", voice, "-f", str(tmp_txt), "-o", str(aiff_path)])
-        subprocess.check_call(["afconvert", "-f", "WAVE", "-d", "LEI16", "-r", "22050", str(aiff_path), str(wav_path)])
+        subprocess.check_call(
+            ["say", "-v", voice, "-f", str(tmp_txt), "-o", str(aiff_path)]
+        )
+        subprocess.check_call(
+            [
+                "afconvert",
+                "-f",
+                "WAVE",
+                "-d",
+                "LEI16",
+                "-r",
+                "22050",
+                str(aiff_path),
+                str(wav_path),
+            ]
+        )
     finally:
         if aiff_path.exists():
             aiff_path.unlink()
         if tmp_txt.exists():
             tmp_txt.unlink()
     return True
+
 
 def main():
     if len(sys.argv) < 2:
@@ -69,6 +86,7 @@ def main():
         except subprocess.CalledProcessError as e:
             print(f"❌ TTS failed for {txt.name}: {e}")
     print(f"Done. created={made} skipped_existing={skipped} invalid_no_cta={invalid}")
+
 
 if __name__ == "__main__":
     main()

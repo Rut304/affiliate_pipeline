@@ -1,9 +1,10 @@
 # sync_packs_to_content.py
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 PACKS_DIR = Path("packs")
 CONTENT_DIR = Path("content")
+
 
 def sync_packs(overwrite: bool = False):
     count = 0
@@ -23,9 +24,17 @@ def sync_packs(overwrite: bool = False):
 
     print(f"\n🔁 Sync complete: {count} packs updated.")
 
+
 if __name__ == "__main__":
     import argparse
-    ap = argparse.ArgumentParser(description="Sync packs/*.yaml into content/{id}/input.yaml for narration.")
-    ap.add_argument("--overwrite", action="store_true", help="Overwrite existing input.yaml files in content/")
+
+    ap = argparse.ArgumentParser(
+        description="Sync packs/*.yaml into content/{id}/input.yaml for narration."
+    )
+    ap.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite existing input.yaml files in content/",
+    )
     args = ap.parse_args()
     sync_packs(overwrite=args.overwrite)

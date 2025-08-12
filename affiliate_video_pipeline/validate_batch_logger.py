@@ -1,11 +1,15 @@
 import os
+
+from affiliate_video_pipeline.manifest_compiler.audit_logger import \
+    log_pipeline_run
 from affiliate_video_pipeline.validate_batch_ready import validate_pack
-from affiliate_video_pipeline.manifest_compiler.audit_logger import log_pipeline_run
+
 
 def validate_all_packs():
     content_dir = "content"
     pack_ids = [
-        name for name in os.listdir(content_dir)
+        name
+        for name in os.listdir(content_dir)
         if os.path.isdir(os.path.join(content_dir, name))
     ]
 

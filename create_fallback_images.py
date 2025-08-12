@@ -1,9 +1,12 @@
 import os
+
 import yaml
 from PIL import Image, ImageDraw, ImageFont
 
+
 def slugify(name):
     return name.lower().replace(" ", "_").replace("-", "_")
+
 
 def create_placeholder(text, path, size=(1024, 768)):
     img = Image.new("RGB", size, color=(200, 200, 220))
@@ -18,6 +21,7 @@ def create_placeholder(text, path, size=(1024, 768)):
     img.save(path)
     print(f"🖼️ Created {path}")
 
+
 def generate_images(pack_id):
     input_file = f"content/{pack_id}/input.yaml"
     image_dir = f"content/{pack_id}/images"
@@ -29,7 +33,7 @@ def generate_images(pack_id):
 
     with open(input_file) as f:
         data = yaml.safe_load(f)
-    
+
     products = data.get("products", [])
     if not products:
         print(f"⚠️ No products found in {input_file}")
@@ -45,8 +49,10 @@ def generate_images(pack_id):
         else:
             print(f"⏩ Skipped (exists): {filename}")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) < 2:
         print("Usage: python create_fallback_images.py <pack_id>")
     else:

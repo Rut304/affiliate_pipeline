@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-import os, re
-from _utils import list_packs, write_csv, env_run_id, log, ensure_dir, copy_if_missing
+import os
+import re
+
+from _utils import (copy_if_missing, ensure_dir, env_run_id, list_packs, log,
+                    write_csv)
 
 PACKS_ROOT = "packs"
 RUN_ID = env_run_id()
@@ -8,11 +11,13 @@ IMG_EXTS = (".jpg", ".jpeg", ".png")
 FALLBACK_NAME = "_default.jpg"
 STEP_REGEX = re.compile(r"^(\d{1,3})")  # e.g., 01_intro.txt
 
+
 def extract_step_index(filename: str, seq: int) -> str:
     m = STEP_REGEX.match(os.path.basename(filename))
     if m:
         return m.group(1).zfill(2)
     return str(seq).zfill(2)
+
 
 def find_image_for_step(images_dir: str, step: str) -> str | None:
     for ext in IMG_EXTS:
@@ -25,6 +30,7 @@ def find_image_for_step(images_dir: str, step: str) -> str | None:
             return os.path.join(images_dir, fn)
     return None
 
+
 def main():
     packs = list_packs(PACKS_ROOT)
     summary_rows = []
@@ -33,7 +39,11 @@ def main():
         narr_dir = os.path.join(pack, "narration")
         img_dir = os.path.join(pack, "images")
         ensure_dir(img_dir)
-        narration_txts = sorted([os.path.join(narr_dir, f) for f in os.listdir(narr_dir)]) if os.path.isdir(narr_dir) else []
+        narration_txts = (
+            sorted([os.path.join(narr_dir, f) for f in os.listdir(narr_dir)])
+            if os.path.isdir(narr_dir)
+            else []
+        )
         narration_txts = [p for p in narration_txts if p.lower().endswith(".txt")]
         fallback_src = os.path.join(img_dir, FALLBACK_NAME)
         created = matched = missing = 0
@@ -59,31 +69,63 @@ def main():
                         is_fallback = True
                         out_img = os.path.relpath(dst, pack)
 
-            mapping_rows.append({
-                "run_id": RUN_ID,
-                "pack": pack_name,
-                "step": step,
-                "narration_txt": os.path.relpath(npath, pack),
-                "image_path": out_img,
-                "is_fallback": is_fallback,
-                "had_image": bool(found)
-            })
+            mapping_rows.append(
+                {
+                    "run_id": RUN_ID,
+                    "pack": pack_name,
+                    "step": step,
+                    "narration_txt": os.path.relpath(npath, pack),
+                    "image_path": out_img,
+                    "is_fallback": is_fallback,
+                    "had_image": bool(found),
+                }
+            )
 
         map_csv = os.path.join(pack, "images_map.csv")
-        write_csv(map_csv, mapping_rows, ["run_id","pack","step","narration_txt","image_path","is_fallback","had_image"])
+        write_csv(
+            map_csv,
+            mapping_rows,
+            [
+                "run_id",
+                "pack",
+                "step",
+                "narration_txt",
+                "image_path",
+                "is_fallback",
+                "had_image",
+            ],
+        )
 
-        summary_rows.append({
-            "run_id": RUN_ID,
-            "pack": pack_name,
-            "narration_count": len(narration_txts),
-            "images_matched": matched,
-            "fallbacks_created": created,
-            "images_missing_after": sum(1 for r in mapping_rows if not r["image_path"])
-        })
-        log(f"[{RUN_ID}] IMG  | {pack_name} | matched={matched} fallback_created={created} missing={missing}")
+        summary_rows.append(
+            {
+                "run_id": RUN_ID,
+                "pack": pack_name,
+                "narration_count": len(narration_txts),
+                "images_matched": matched,
+                "fallbacks_created": created,
+                "images_missing_after": sum(
+                    1 for r in mapping_rows if not r["image_path"]
+                ),
+            }
+        )
+        log(
+            f"[{RUN_ID}] IMG  | {pack_name} | matched={matched} fallback_created={created} missing={missing}"
+        )
 
     out_csv = os.path.join("logs", f"run_{RUN_ID}", "match_images.csv")
-    write_csv(out_csv, summary_rows, ["run_id","pack","narration_count","images_matched","fallbacks_created","images_missing_after"])
+    write_csv(
+        out_csv,
+        summary_rows,
+        [
+            "run_id",
+            "pack",
+            "narration_count",
+            "images_matched",
+            "fallbacks_created",
+            "images_missing_after",
+        ],
+    )
+
 
 if __name__ == "__main__":
     main()

@@ -8,13 +8,9 @@ packs = [
             "image": "assets/images/earbuds.png",
             "video": "assets/videos/earbuds.mp4",
             "narration": "assets/narration/earbuds.mp3",
-            "thumbnail": "assets/thumbnails/earbuds_thumb.png"
+            "thumbnail": "assets/thumbnails/earbuds_thumb.png",
         },
-        "upload_status": {
-            "amazon": "pending",
-            "youtube": "uploaded",
-            "s3": "uploaded"
-        },
-        "version": "v1.0.3"
+        "upload_status": {"amazon": "pending", "youtube": "uploaded", "s3": "uploaded"},
+        "version": "v1.0.3",
     }
 ]
