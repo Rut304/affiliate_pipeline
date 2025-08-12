@@ -29,7 +29,7 @@ jobs:
 
       - name: Lint & type check
         run: |
-          flake8 .
+          flake8 --config .flake8 .
           black --check .
           isort --check-only .
           mypy .
