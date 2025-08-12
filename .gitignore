@@ -8,3 +8,6 @@ __pycache__/
 # Exports and generated assets
 exports*/
 .env
+.venv_dev/
+.venv_core/
+*.log
