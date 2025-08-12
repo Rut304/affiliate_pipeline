@@ -1,0 +1,7 @@
+run_id,pack,narration_count,images_matched,fallbacks_created,images_missing_after
+product1_test,001_affiliate_coffee,0,0,0,0
+product1_test,002_affiliate_blender,0,0,0,0
+product1_test,003_affiliate_airfryer,0,0,0,0
+product1_test,product1,2,0,2,0
+product1_test,product2,0,0,0,0
+product1_test,sample_pack,2,2,0,0
