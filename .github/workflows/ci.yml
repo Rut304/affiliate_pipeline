@@ -29,6 +29,8 @@ jobs:
 
       - name: Lint & type check
         run: |
+          test -f .flake8 || { echo "::error::Missing .flake8 configuration file"; exit 2; }
+          flake8 --config .flake8 .
           flake8 --config .flake8 .
           black --check .
           isort --check-only .
