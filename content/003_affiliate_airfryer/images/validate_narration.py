@@ -7,14 +7,12 @@ from typing import Dict, List
 MIN_LENGTH = 35
 PATCH_TEXT = " Discover why this pick stands out."
 
+
 def clean_text(text: str) -> str:
     # Remove placeholder blocks like [CTA_PRIMARY], [LINK], etc.
-    text = re.sub(r"
-
-.*?
-
-", "", text)
+    text = re.sub(r"\s+", " ", text)
     return text.strip()
+
 
 def validate_narration(narration_dir: str, patch: bool = False) -> Dict[str, List[str]]:
     dir_path = Path(narration_dir)
@@ -39,7 +37,7 @@ def validate_narration(narration_dir: str, patch: bool = False) -> Dict[str, Lis
             try:
                 subprocess.run(
                     ["say", "-v", "Samantha", safe_text, "-o", str(wav_file)],
-                    check=True
+                    check=True,
                 )
                 print(f"🎤 Rebuilt: {wav_file.name}")
             except subprocess.CalledProcessError as e:
