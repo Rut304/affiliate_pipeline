@@ -1,0 +1,8 @@
+title: "Keyboard Sandbox"
+items:
+  - name: "Mechanical Keyboard X1"
+    description: "Tactile switches, RGB backlight, hotswap."
+    url: "https://example.com/mech-x1"
+  - name: "Wireless Keyboard Pro"
+    description: "Slim profile, long battery, quiet keys."
+    url: "https://example.com/wireless-pro"

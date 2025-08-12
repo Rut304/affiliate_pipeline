@@ -1,0 +1,8 @@
+products:
+  - name: "Mechanical Keyboard X1"
+    summary: "This tactile keyboard features RGB lighting and hot-swappable switches."
+    affiliate_url: "https://example.com/mech-x1"
+
+  - name: "Wireless Keyboard Pro"
+    summary: "A slim wireless keyboard with quiet keys and long battery life."
+    affiliate_url: "https://example.com/wireless-pro"

@@ -7,3 +7,4 @@ __pycache__/
 
 # Exports and generated assets
 exports*/
+.env

@@ -1,0 +1,21 @@
+{
+  "daily_runs": 20,
+  "window": {
+    "start": "09:00",
+    "end": "23:00",
+    "jitter_seconds": 300
+  },
+  "packs_dir": "packs",
+  "content_dir": "content",
+  "manifest_path": "manifests/packs_manifest.csv",
+  "run_pipeline_path": "run_pipeline.py",
+  "python_path": "",
+  "auto_repair_cta": true,
+  "fallback_cta_default": "CTA_PRIMARY: Check out this product",
+  "allow_repeat_packs_per_day": false,
+  "max_retries_per_pack": 1,
+  "log_dir": "logs",
+  "log_prefix": "scheduler",
+  "min_gap_seconds": 60,
+  "tts_voice": "Samantha"
+}

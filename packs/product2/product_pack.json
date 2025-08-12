@@ -1,0 +1,16 @@
+{
+  "id": "product2",
+  "title": "SmartChef Turbo Grill",
+  "features": [
+    "Infrared heat technology",
+    "Rapid 10-minute preheat",
+    "Grease-trapping tray"
+  ],
+  "benefits": [
+    "Restaurant-quality grilling at home",
+    "Fast and smoke-free",
+    "Cleanup is a breeze"
+  ],
+  "affiliate_link": "https://yourdomain.com/turbogrill",
+  "tone": "persuasive"
+}

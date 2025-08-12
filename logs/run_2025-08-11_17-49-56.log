@@ -1,0 +1,23 @@
+[2025-08-11_17-49-56] Batch pack validation completed.
+
+📦 Pack: 001_affiliate_coffee
+  - manifest: ❌ Manifest missing
+  - images: ❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/001_affiliate_coffee_manifest.json'
+  - narration: ❌ Narration file missing
+  - output_dir: ✅ Ready
+  - status: ❌ Pack is not ready
+
+📦 Pack: 002_affiliate_blender
+  - manifest: ❌ Manifest missing
+  - images: ❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/002_affiliate_blender_manifest.json'
+  - narration: ❌ Narration file missing
+  - output_dir: ✅ Ready
+  - status: ❌ Pack is not ready
+
+📦 Pack: 003_affiliate_airfryer
+  - manifest: ❌ Manifest missing
+  - images: ❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/003_affiliate_airfryer_manifest.json'
+  - narration: ❌ Narration file missing
+  - output_dir: ✅ Ready
+  - status: ❌ Pack is not ready
+

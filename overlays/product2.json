@@ -1,0 +1,53 @@
+{
+  "id": "product2",
+  "source": "narration/product2.txt",
+  "estimated_duration_sec": 17.45,
+  "style": {
+    "font_family": "Inter-SemiBold",
+    "font_size": 42,
+    "text_color": "#FFFFFF",
+    "shadow": {
+      "color": "#000000",
+      "blur": 12,
+      "opacity": 0.65
+    },
+    "button": {
+      "bg_color": "#FF7A00",
+      "text_color": "#FFFFFF",
+      "font_family": "Inter-Bold",
+      "font_size": 32,
+      "radius": 12,
+      "padding": [
+        18,
+        28
+      ]
+    }
+  },
+  "safe_area": {
+    "margin": 0.06
+  },
+  "overlays": [
+    {
+      "type": "cta",
+      "text_placeholder": "[CTA_PRIMARY]",
+      "url_placeholder": "[AFFILIATE_URL]",
+      "start": 13.09,
+      "end": 17.45,
+      "position": {
+        "anchor": "bottom_center",
+        "x": 0.5,
+        "y": 0.9,
+        "max_width": 0.86
+      },
+      "button": {
+        "align": "center",
+        "icon": "external_link"
+      }
+    }
+  ],
+  "meta": {
+    "generator": "overlay_generator.py",
+    "version": 1,
+    "style_name": "dark_glow"
+  }
+}

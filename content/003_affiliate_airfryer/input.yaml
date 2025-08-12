@@ -1,0 +1,28 @@
+pack_name: 003_affiliate_airfryer
+category: kitchen
+products:
+- asin: B08N5WRWNW
+  id: airfryer_1
+  title: COSORI Air Fryer Pro LE
+  image: img3.jpg
+  link: https://affiliate-site.com/cosori
+- asin: B07X1K2T6T
+  id: airfryer_2
+  title: Ninja AF101 Air Fryer
+  image: img4.jpg
+  link: https://affiliate-site.com/ninja-af101
+- asin: B09N6Y9Z1P
+  id: airfryer_3
+  title: Instant Vortex Plus XL
+  image: img5.jpg
+  link: https://affiliate-site.com/instant-vortex
+- asin: B07X2LQ4ZC
+  id: airfryer_4
+  title: Chefman TurboFry
+  image: img6.jpg
+  link: https://affiliate-site.com/chefman-turbofry
+- asin: B08N5LNQCX
+  id: airfryer_5
+  title: GoWISE USA 5.8-Qt
+  image: img7.jpg
+  link: https://affiliate-site.com/gowise-58qt

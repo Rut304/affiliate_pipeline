@@ -1,0 +1,4 @@
+Pack ID,Manifest,Images,Narration,Output Dir,Status
+001_affiliate_coffee,❌ Manifest missing,❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/001_affiliate_coffee_manifest.json',❌ Narration file missing,✅ Ready,❌ Pack is not ready
+002_affiliate_blender,❌ Manifest missing,❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/002_affiliate_blender_manifest.json',❌ Narration file missing,✅ Ready,❌ Pack is not ready
+003_affiliate_airfryer,❌ Manifest missing,❌ Error validating images: [Errno 2] No such file or directory: 'affiliate_video_pipeline/manifests/003_affiliate_airfryer_manifest.json',❌ Narration file missing,✅ Ready,❌ Pack is not ready

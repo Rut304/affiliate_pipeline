@@ -1,0 +1,16 @@
+{
+  "id": "product1",
+  "title": "Acme Super Blender",
+  "features": [
+    "1200W motor for fast blending",
+    "Dishwasher-safe jar",
+    "3 speed modes with pulse"
+  ],
+  "benefits": [
+    "Crushes ice in seconds",
+    "Easy cleanup",
+    "Perfect smoothies every time"
+  ],
+  "affiliate_link": "https://yourdomain.com/blender",
+  "tone": "persuasive"
+}

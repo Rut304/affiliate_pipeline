@@ -1,3 +1,17 @@
+# Load environment variables from .env
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Fetch Amazon credentials
+ACCESS_KEY = os.getenv("AMAZON_ACCESS_KEY")
+SECRET_KEY = os.getenv("AMAZON_SECRET_KEY")
+TAG = os.getenv("AMAZON_ASSOCIATE_TAG")
+
+# Optional: Debug print to confirm loading
+print(f"✅ Loaded Amazon credentials: TAG={TAG}")
+
 #!/usr/bin/env python3
 import argparse
 import json
