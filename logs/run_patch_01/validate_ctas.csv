@@ -1,0 +1,8 @@
+run_id,pack,input_yaml_found,cta_before,cta_after,changed,note
+patch_01,.keep,False,,,False,missing input.yaml
+patch_01,001_affiliate_coffee,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template
+patch_01,002_affiliate_blender,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template
+patch_01,003_affiliate_airfryer,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template
+patch_01,product1,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template
+patch_01,product2,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template
+patch_01,sample_pack,True,,Visit the link in the description to learn more and claim the current deal.,True,patched from template

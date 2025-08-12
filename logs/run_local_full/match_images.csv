@@ -1,0 +1,8 @@
+run_id,pack,narration_count,images_matched,fallbacks_created,images_missing_after
+local_full,.keep,0,0,0,0
+local_full,001_affiliate_coffee,0,0,0,0
+local_full,002_affiliate_blender,0,0,0,0
+local_full,003_affiliate_airfryer,0,0,0,0
+local_full,product1,0,0,0,0
+local_full,product2,0,0,0,0
+local_full,sample_pack,2,2,0,0

@@ -1,0 +1,8 @@
+run_id,pack,input_yaml_found,cta_before,cta_after,changed,note
+test_run,.keep,False,,,False,missing input.yaml
+test_run,001_affiliate_coffee,False,,,False,missing input.yaml
+test_run,002_affiliate_blender,False,,,False,missing input.yaml
+test_run,003_affiliate_airfryer,False,,,False,missing input.yaml
+test_run,product1,False,,,False,missing input.yaml
+test_run,product2,False,,,False,missing input.yaml
+test_run,sample_pack,True,,,False,cta missing; no template available

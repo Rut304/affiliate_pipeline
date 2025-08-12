@@ -1,0 +1,75 @@
+name: Pack automation
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+    - cron: "12 1 * * *"
+    - cron: "24 2 * * *"
+    - cron: "36 3 * * *"
+    - cron: "48 4 * * *"
+    - cron: "0 6 * * *"
+    - cron: "12 7 * * *"
+    - cron: "24 8 * * *"
+    - cron: "36 9 * * *"
+    - cron: "48 10 * * *"
+    - cron: "0 12 * * *"
+    - cron: "12 13 * * *"
+    - cron: "24 14 * * *"
+    - cron: "36 15 * * *"
+    - cron: "48 16 * * *"
+    - cron: "0 18 * * *"
+    - cron: "12 19 * * *"
+    - cron: "24 20 * * *"
+    - cron: "36 21 * * *"
+    - cron: "48 22 * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pack-automation
+  cancel-in-progress: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run pipeline
+        env:
+          RUN_ID: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: |
+          python scripts/run_pipeline.py
+
+      - name: Commit changes (if any)
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "automation: run ${{ env.RUN_ID }}"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Upload logs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-${{ env.RUN_ID }}
+          path: logs/
