@@ -1,0 +1,7 @@
+run_id,pack,input_yaml_found,cta_changed,cta_note,narration_count,images_matched,fallbacks_created,images_missing_after
+16935128783-1,001_affiliate_coffee,True,False,cta present; no change,0,0,0,0
+16935128783-1,002_affiliate_blender,True,False,cta present; no change,0,0,0,0
+16935128783-1,003_affiliate_airfryer,True,False,cta present; no change,0,0,0,0
+16935128783-1,product1,True,False,cta present; no change,2,2,0,0
+16935128783-1,product2,True,False,cta present; no change,0,0,0,0
+16935128783-1,sample_pack,True,False,cta present; no change,2,2,0,0
