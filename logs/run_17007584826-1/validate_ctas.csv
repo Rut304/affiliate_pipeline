@@ -1,0 +1,7 @@
+run_id,pack,input_yaml_found,cta_before,cta_after,changed,note
+17007584826-1,001_affiliate_coffee,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
+17007584826-1,002_affiliate_blender,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
+17007584826-1,003_affiliate_airfryer,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
+17007584826-1,product1,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
+17007584826-1,product2,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
+17007584826-1,sample_pack,True,Visit the link in the description to learn more and claim the current deal.,Visit the link in the description to learn more and claim the current deal.,False,cta present; no change
