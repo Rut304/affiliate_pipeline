@@ -1,3 +1,4 @@
 {
-    "editor.inlayHints.padding": false
+    "editor.inlayHints.padding": false,
+    "python.analysis.typeEvaluation.enableExperimentalFeatures": true
 }
