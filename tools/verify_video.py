@@ -1,5 +1,9 @@
 import sys
 from moviepy.video.io.VideoFileClip import VideoFileClip
+# filepath: tools/verify_video.py
+import sys
+from moviepy.editor import VideoFileClip
+d9aa1ed (Save local changes before pulling)
 
 def verify_video(path):
     clip = VideoFileClip(path)

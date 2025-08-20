@@ -38,3 +38,8 @@ jobs:
 
       - name: Run tests with coverage
         run: pytest --cov=admin_gui --cov-report=term-missing
+        - name: Upload coverage HTML artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: coverage-html
+            path: htmlcov
