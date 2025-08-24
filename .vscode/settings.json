@@ -1,4 +1,7 @@
 {
     "editor.inlayHints.padding": false,
-    "python.analysis.typeEvaluation.enableExperimentalFeatures": true
+    "python.analysis.typeEvaluation.enableExperimentalFeatures": true,
+    "github.copilot.chat.codesearch.enabled": true,
+    "github.copilot.chat.generateTests.codeLens": true,
+    "javascript.referencesCodeLens.enabled": true
 }
