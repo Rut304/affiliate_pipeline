@@ -72,4 +72,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logs-${{ env.RUN_ID }}
+      - name: List video files
+        run: ls -lhR content/*/video || echo "No video directory found"
           path: logs/
